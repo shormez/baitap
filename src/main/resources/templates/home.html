@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Order Manager</title>
+</head>
+<body>
+<div align="center">
+    <h1>Order List</h1>
+    <a href="/new">Create New Order</a>
+    <br/><br/>
+    <table border="1" cellpadding="10">
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Date</th>
+            <th>Order Mode</th>
+            <th>Customer id</th>
+            <th>Order Status</th>
+            <th>Order Total</th>
+            <th>Sales Rep id</th>
+            <th>Promotion id</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="orders : ${ordersLists}">
+            <td th:text="${orders.id}">Order ID</td>
+            <td th:text="${orders.orderDate}">Order Date</td>
+            <td th:text="${orders.orderMode}">Order Mode</td>
+            <td th:text="${orders.customerId}">Customer id</td>
+            <td th:text="${orders.orderStatus}">Order Status</td>
+            <td th:text="${orders.orderTotal}">Order Total</td>
+            <td th:text="${orders.salesRepId}">Sales Rep id</td>
+            <td th:text="${orders.promotionId}">Promotion id</td>
+            <td>
+                <a th:href="@{'/detail/' + ${orders.id}}">Detail</a>
+                &nbsp;
+                <a th:href="@{'/edit/' + ${orders.id}}">Edit</a>
+                &nbsp;&nbsp;&nbsp;
+                <a th:href="@{'/delete/' + ${orders.id}}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

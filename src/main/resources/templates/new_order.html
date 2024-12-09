@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Create New Order</title>
+</head>
+<body>
+<div align="center">
+    <h1>Create New Order</h1>
+</div>
+<div align="center">
+
+
+    <form action="#" th:action="@{/save}" th:object="${orders}"
+          method="get">
+
+        <table border="0" cellpadding="10">
+            <tr>
+                <td>Order Date:</td>
+                <td><input type="date" th:field="*{orderDate}" /></td>
+            </tr>
+            <tr>
+                <td>Order Mode:</td>
+                <td><input type="text" th:field="*{orderMode}" /></td>
+            </tr>
+            <tr>
+                <td>Customer id:</td>
+                <td><input type="text" th:field="*{customerId}" /></td>
+            </tr>
+            <tr>
+                <td>Order Total:</td>
+                <td><input type="text" th:field="*{orderTotal}" /></td>
+            </tr>
+            <tr>
+                <td>Sales Rep id:</td>
+                <td><input type="text" th:field="*{salesRepId}" /></td>
+            </tr>
+            <tr>
+                <td>Promotion id:</td>
+                <td><input type="text" th:field="*{promotionId}" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Save</button> </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

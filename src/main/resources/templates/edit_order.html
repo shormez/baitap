@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Edit Order</title>
+</head>
+<body>
+
+<div align="left">
+    <h3>Edit Order</h3>
+    <br />
+    <form action="#" th:action="@{/save}" th:object="${orders}"
+          method="get">
+        <input type="hidden" th:field="*{id}" />
+        <table border="0" cellpadding="10">
+            <tr>
+                <td>Order Date:</td>
+                <td><input type="date" th:field="*{orderDate}" th:value="${orderDate}" /></td>
+            </tr>
+            <tr>
+                <td>Order Mode:</td>
+                <td><input type="text" th:field="*{orderMode}" /></td>
+            </tr>
+            <tr>
+                <td>Customer id:</td>
+                <td><input type="text" th:field="*{customerId}" /></td>
+            </tr>
+            <tr>
+                <td>Order Total:</td>
+                <td><input type="text" th:field="*{orderTotal}" /></td>
+            </tr>
+            <tr>
+                <td>Sales Rep id:</td>
+                <td><input type="text" th:field="*{salesRepId}" /></td>
+            </tr>
+            <tr>
+                <td>Promotion id:</td>
+                <td><input type="text" th:field="*{promotionId}" /></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Edit</button> </td>
+            </tr>
+        </table>
+
+<div align="left">
+    <h3>Order detail</h3>
+    <input type="hidden" th:field="*{id}" />
+    <table border="0" cellpadding="10">
+        <thead>
+        <tr>
+            <th>Select</th>
+            <th>Quantity</th>
+            <th>Product ID</th>
+            <th>Unit Price</th>
+            <th>Line Item ID</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+
+                th:each="orderDetail : ${orderDetailList}">
+            <td><input type="checkbox"></td>
+            <td><input type="text" th:field="*{orderDetail.productId}" th:placeholder="${orderDetail.productId!= null && !orderDetail.productId.isEmpty()}" /></td>
+            <td><input type="text" th:field="*{orderDetail.quantity}" th:placeholder="${orderDetail.quantity!= null && !orderDetail.quantity.isEmpty()}" /></td>
+            <td><input type="text" th:field="*{orderDetail.unitPrice}" th:placeholder="${orderDetail.unitPrice!= null && !orderDetail.unitPrice.isEmpty()}" /></td>
+            <td><input type="text" th:field="*{orderDetail.lineItemId}" th:placeholder="${orderDetail.lineItemId!= null && !orderDetail.lineItemId.isEmpty()}" /></td>
+
+        </tr>
+        </tbody>
+    </table>
+    <div class="actions">
+
+
+        <form th:action="@{'/addRow/'+${orders.id}}" method="post">
+            <button type="submit">Add Row</button>
+        </form>
+        <button type="submit">Submit</button>
+    </div>
+</div>
+    </form>
+</div>
+</body>
+</html>
