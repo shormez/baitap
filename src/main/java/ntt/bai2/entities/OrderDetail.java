@@ -2,13 +2,17 @@ package ntt.bai2.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "order_detail")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +32,5 @@ public class OrderDetail {
         this.unitPrice = unitPrice;
         this.lineItemId = lineItemId;
     }
+
 }

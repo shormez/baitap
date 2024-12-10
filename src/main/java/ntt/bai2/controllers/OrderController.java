@@ -43,6 +43,7 @@ public class OrderController {
 
 
         model.addAttribute("orders",orders);
+        model.addAttribute("dsach",dsach);
       //  model.addAttribute("order_Detail",orderDetail);
         return "new_order";
 
@@ -52,7 +53,7 @@ public class OrderController {
     @RequestMapping(value = "/save",method = RequestMethod.GET)
     public String saveOrder(@ModelAttribute("orders") Orders orders ){
         System.out.println("id tai save "+orders.getId());
-        orders.getOrderDetaillist().addAll(dsach);
+      //  orders.getOrderDetaillist().addAll(dsach);
        // orderDetailService.save(orderDetail);
         ordersService.save(orders);
 
@@ -66,30 +67,66 @@ public class OrderController {
     @RequestMapping(value = "/edit/{id}",method = RequestMethod.GET)
     public String editOrderAndOrderDetail(@PathVariable Long id,Model model){
         dsach=new ArrayList<>();
+        System.out.println("id boc duoc tai edit "+id);
         Orders existingOrders= ordersService.findById(id);
-
+//        if (existingOrders == null) {
+//            // Xử lý nếu không tìm thấy đơn hàng
+//            System.out.println("bi null");
+//            return "error"; // trả về trang lỗi
+//        }
+        System.out.println(existingOrders.getId()+" "+existingOrders.getOrderDate()+" "+existingOrders.getOrderTotal());
+        List<OrderDetail> orderDetaillist = existingOrders.getOrderDetaillist();
+        if (orderDetaillist == null) {
+            orderDetaillist = new ArrayList<>();  // Khởi tạo danh sách trống nếu null
+        }
+        for(OrderDetail x: orderDetaillist){
+            System.out.println(x.getId()+" "+x.getQuantity()+" "+x.getProductId()+" "+x.getLineItemId()+" "+x.getOrders().getId());
+        }
         model.addAttribute("orders",existingOrders);
-        System.out.println("id boc duoc tai edit "+existingOrders.getId());
 
-        model.addAttribute("orderDetailList",existingOrders.getOrderDetaillist());
+
+        model.addAttribute("orderDetailList",orderDetaillist);
+      //  model.addAttribute("dsach",dsach);
         return "edit_order";
     }
-    @PostMapping("/addRow/{id}")
-    public String addRow(@PathVariable Long id, Model model) {
+    @GetMapping("/submit/{id}")
+    public String addRow(@ModelAttribute("orders") Orders orders,@PathVariable Long id ,Model model,
+                         @RequestParam("quantity[]")List<String>quantity,
+                         @RequestParam("productId[]")List<String>productId,
+                         @RequestParam("unitPrice[]")List<String>unitPrice,
+                         @RequestParam("lineItemId[]")List<String>lineItemId) {
 
         int newLineItemId =1;
-        Orders orders= ordersService.findById(id);
-        System.out.println("id tai addrow "+orders.getId());
+        System.out.println("id tai submit la "+id);
+        System.out.println("id cua orders den la "+orders.getId());
+        for(int i=0;i<quantity.size();i++){
+            OrderDetail newOrderDetail=new OrderDetail(Long.parseLong(quantity.get(i)),Long.parseLong(productId.get(i)),Double.parseDouble(unitPrice.get(i)),Long.parseLong(lineItemId.get(i)));
+            newOrderDetail.setOrders(orders);
+            dsach.add(newOrderDetail);
+            System.out.println(newOrderDetail.getId()+" "+newOrderDetail.getQuantity()+" "+newOrderDetail.getLineItemId());
+           // orderDetailService.save(newOrderDetail);
+            System.out.println("thuoc tinh trong orders "+quantity.get(i)+" "+productId.get(i)+" "+unitPrice.get(i)+" "+lineItemId.get(i));
+        }
+        Orders existedOrder= ordersService.findById(id);
+        orders.getOrderDetaillist().addAll(dsach);
+        System.out.println(orders.getOrderDate()+" "+orders.getOrderMode()+" "+orders.getCustomerId()+" "+orders.getOrderTotal());
+     //   existedOrder.getOrderDetaillist().addAll(dsach);
+     //   ordersService.save(existedOrder);
+        ordersService.save(orders);
+       // Orders orders= ordersService.findById(id);
+      //  System.out.println("id order tai addrow "+id);
+      //  System.out.println("id tai addrow "+orders.getId());
 //        if(orders.getOrderDetaillist()!=null ){
 //            newLineItemId+= orders.getOrderDetaillist().size();
 //        }
-        OrderDetail newDetail = new OrderDetail(0, 0, 0.0, newLineItemId);
-        dsach.add(newDetail);
-        System.out.println(orders.getOrderDate());
-    //    orders.getOrderDetaillist().add(newDetail);
-        System.out.println("kich ko orderdetaillist "+orders.getOrderDetaillist().size());
-        model.addAttribute("orders", orders);
-        return "redirect:/edit/"+id;
+//        OrderDetail newDetail = new OrderDetail(0, 0, 0.0, newLineItemId);
+//        dsach.add(newDetail);
+//
+//        System.out.println(orders.getOrderDate());
+//    //    orders.getOrderDetaillist().add(newDetail);
+//        System.out.println("kich ko orderdetaillist "+orders.getOrderDetaillist().size());
+//        model.addAttribute("orders", orders);
+        return "redirect:/";
     }
 
 }
