@@ -68,6 +68,7 @@ public class OrderController {
     public String editOrderAndOrderDetail(@PathVariable Long id,Model model){
         dsach=new ArrayList<>();
         System.out.println("id boc duoc tai edit "+id);
+
         Orders existingOrders= ordersService.findById(id);
 //        if (existingOrders == null) {
 //            // Xử lý nếu không tìm thấy đơn hàng
