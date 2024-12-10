@@ -87,7 +87,7 @@ public class OrderController {
 
 
         model.addAttribute("orderDetailList",orderDetaillist);
-      //  model.addAttribute("dsach",dsach);
+        //  model.addAttribute("dsach",dsach);
         return "edit_order";
     }
     @GetMapping("/submit/{id}")
@@ -105,18 +105,18 @@ public class OrderController {
             newOrderDetail.setOrders(orders);
             dsach.add(newOrderDetail);
             System.out.println(newOrderDetail.getId()+" "+newOrderDetail.getQuantity()+" "+newOrderDetail.getLineItemId());
-           // orderDetailService.save(newOrderDetail);
+            // orderDetailService.save(newOrderDetail);
             System.out.println("thuoc tinh trong orders "+quantity.get(i)+" "+productId.get(i)+" "+unitPrice.get(i)+" "+lineItemId.get(i));
         }
         Orders existedOrder= ordersService.findById(id);
         orders.getOrderDetaillist().addAll(dsach);
         System.out.println(orders.getOrderDate()+" "+orders.getOrderMode()+" "+orders.getCustomerId()+" "+orders.getOrderTotal());
-     //   existedOrder.getOrderDetaillist().addAll(dsach);
-     //   ordersService.save(existedOrder);
+        //   existedOrder.getOrderDetaillist().addAll(dsach);
+        //   ordersService.save(existedOrder);
         ordersService.save(orders);
-       // Orders orders= ordersService.findById(id);
-      //  System.out.println("id order tai addrow "+id);
-      //  System.out.println("id tai addrow "+orders.getId());
+        // Orders orders= ordersService.findById(id);
+        //  System.out.println("id order tai addrow "+id);
+        //  System.out.println("id tai addrow "+orders.getId());
 //        if(orders.getOrderDetaillist()!=null ){
 //            newLineItemId+= orders.getOrderDetaillist().size();
 //        }
