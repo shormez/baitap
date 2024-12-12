@@ -2,40 +2,40 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <title>Edit Order</title>
 </head>
 <body>
 
 <div align="left">
     <h3>Edit Order</h3>
-    <br />
-    <form action="#" th:action="@{'/submit/'+${orders.id}}" th:object="${orders}" method="get">
-        <input type="hidden" th:field="*{id}" />
+    <br/>
+    <form action="#" method="get" th:action="@{'/submit/'+${orders.id}}" th:object="${orders}">
+        <input th:field="*{id}" type="hidden"/>
         <table border="0" cellpadding="10">
             <tr>
                 <td>Order Date:</td>
-                <td><input type="date" th:field="*{orderDate}" th:value="${orderDate}" /></td>
+                <td><input th:field="*{orderDate}" th:value="${orderDate}" type="date"/></td>
             </tr>
             <tr>
                 <td>Order Mode:</td>
-                <td><input type="text" th:field="*{orderMode}" /></td>
+                <td><input th:field="*{orderMode}" type="text"/></td>
             </tr>
             <tr>
                 <td>Customer id:</td>
-                <td><input type="text" th:field="*{customerId}" /></td>
+                <td><input th:field="*{customerId}" type="text"/></td>
             </tr>
             <tr>
                 <td>Order Total:</td>
-                <td><input type="text" th:field="*{orderTotal}" /></td>
+                <td><input th:field="*{orderTotal}" type="text"/></td>
             </tr>
             <tr>
                 <td>Sales Rep id:</td>
-                <td><input type="text" th:field="*{salesRepId}" /></td>
+                <td><input th:field="*{salesRepId}" type="text"/></td>
             </tr>
             <tr>
                 <td>Promotion id:</td>
-                <td><input type="text" th:field="*{promotionId}" /></td>
+                <td><input th:field="*{promotionId}" type="text"/></td>
             </tr>
         </table>
 
@@ -52,18 +52,18 @@
             </thead>
             <tbody id="order-details-table">
             <tr th:each="orderDetail : ${orderDetaillist}">
-                <td><input type="checkbox" class="select-checkbox" ></td>
-                <td><input type="text" th:value="${orderDetail.quantity}" name="oldQuantity[]" /></td>
-                <td><input type="text" th:value="${orderDetail.productId}" name="oldProductId[]" /></td>
-                <td><input type="text" th:value="${orderDetail.unitPrice}" name="oldUnitPrice[]" /></td>
-                <td><input type="text" th:value="${orderDetail.lineItemId}" name="oldLineItemId[]" /></td>
+                <td><input class="select-checkbox" type="checkbox"></td>
+                <td><input name="oldQuantity[]" th:value="${orderDetail.quantity}" type="text"/></td>
+                <td><input name="oldProductId[]" th:value="${orderDetail.productId}" type="text"/></td>
+                <td><input name="oldUnitPrice[]" th:value="${orderDetail.unitPrice}" type="text"/></td>
+                <td><input name="oldLineItemId[]" th:value="${orderDetail.lineItemId}" type="text"/></td>
             </tr>
             </tbody>
         </table>
 
         <div class="actions">
             <button id="add-new-btn" type="button">Add Row</button>
-            <button type="button" id="delete-btn">Delete</button>
+            <button id="delete-btn" type="button">Delete</button>
             <script>
                 const btn = document.getElementById('add-new-btn');
                 const btnDel = document.getElementById('delete-btn');
@@ -84,9 +84,8 @@
                 function delHTML() {
                     const checkboxes = document.querySelectorAll('.select-checkbox:checked');
                     checkboxes.forEach(checkbox => {
-                        const row = checkbox.closest('tr');
-                        const inputs = row.querySelectorAll('input[type="text"]');
-                         inputs.forEach(input => input.disabled = true); row.remove();
+                       const row = checkbox.closest('tr');
+                       row.remove();
 
                     });
                 }
