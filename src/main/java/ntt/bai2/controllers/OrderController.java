@@ -124,13 +124,16 @@ public class OrderController {
                 //      System.out.println("thuoc tinh trong orders "+quantity.get(i)+" "+productId.get(i)+" "+unitPrice.get(i)+" "+lineItemId.get(i));
             }
         }
-        for (int i = 0; i < oldQuantity.size(); i++) {
-            OrderDetail newOrderDetail = new OrderDetail(Long.parseLong(oldQuantity.get(i)), Long.parseLong(oldProductId.get(i)), Double.parseDouble(oldUnitPrice.get(i)), Long.parseLong(oldLineItemId.get(i)));
-            newOrderDetail.setOrders(orders);
+        if(oldQuantity!=null){
+            for (int i = 0; i < oldQuantity.size(); i++) {
+                OrderDetail newOrderDetail = new OrderDetail(Long.parseLong(oldQuantity.get(i)), Long.parseLong(oldProductId.get(i)), Double.parseDouble(oldUnitPrice.get(i)), Long.parseLong(oldLineItemId.get(i)));
+                newOrderDetail.setOrders(orders);
 //            orderDetailService.save(newOrderDetail);
-            oldOrders.getOrderDetaillist().add(newOrderDetail);
-            //      System.out.println("thuoc tinh trong orders "+quantity.get(i)+" "+productId.get(i)+" "+unitPrice.get(i)+" "+lineItemId.get(i));
+                oldOrders.getOrderDetaillist().add(newOrderDetail);
+                //      System.out.println("thuoc tinh trong orders "+quantity.get(i)+" "+productId.get(i)+" "+unitPrice.get(i)+" "+lineItemId.get(i));
+            }
         }
+
         System.out.println("orderdetaillist cua order truoc khi addall");
         for (OrderDetail x : orders.getOrderDetaillist()) {
             System.out.println(x.getQuantity() + " " + x.getProductId() + " " + x.getUnitPrice() + " " + x.getLineItemId());
