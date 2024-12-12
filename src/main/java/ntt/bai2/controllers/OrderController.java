@@ -99,7 +99,6 @@ public class OrderController {
     @GetMapping("/submit/{id}")
     public String addRow(@ModelAttribute("orders") Orders orders
             , @PathVariable Long id,
-                         Model model,
                          @RequestParam(value = "newQuantity[]",required = false) List<String> quantity,
                          @RequestParam(value = "newProductId[]",required = false) List<String> productId,
                          @RequestParam(value = "newUnitPrice[]", required = false) List<String> unitPrice,
@@ -109,8 +108,6 @@ public class OrderController {
                          @RequestParam(value = "oldUnitPrice[]",required = false) List<String> oldUnitPrice,
                          @RequestParam(value = "oldLineItemId[]",required = false) List<String> oldLineItemId
                          ) {
-
-        int newLineItemId = 1;
         System.out.println("id tai submit la " + id);
         Orders oldOrders= ordersService.findById(id);
 
@@ -132,23 +129,18 @@ public class OrderController {
             newOrderDetail.setOrders(orders);
 //            orderDetailService.save(newOrderDetail);
             oldOrders.getOrderDetaillist().add(newOrderDetail);
-            //    System.out.println(newOrderDetail.getId()+" "+newOrderDetail.getQuantity()+" "+newOrderDetail.getLineItemId());
-            // orderDetailService.save(newOrderDetail);
             //      System.out.println("thuoc tinh trong orders "+quantity.get(i)+" "+productId.get(i)+" "+unitPrice.get(i)+" "+lineItemId.get(i));
         }
         System.out.println("orderdetaillist cua order truoc khi addall");
         for (OrderDetail x : orders.getOrderDetaillist()) {
             System.out.println(x.getQuantity() + " " + x.getProductId() + " " + x.getUnitPrice() + " " + x.getLineItemId());
         }
-        //  Orders existedOrder= ordersService.findById(id);
-//        orders.getOrderDetaillist().addAll(dsach);
+
         System.out.println("thuoc tinh orders: " + orders.getOrderDate() + " " + orders.getOrderMode() + " " + orders.getCustomerId() + " " + orders.getOrderTotal());
         System.out.println("orderdetaillist cua order sau khi addall");
         for (OrderDetail x : orders.getOrderDetaillist()) {
             System.out.println(x.getQuantity() + " " + x.getProductId() + " " + x.getUnitPrice() + " " + x.getLineItemId());
         }
-        //   existedOrder.getOrderDetaillist().addAll(dsach);
-        //   ordersService.save(existedOrder);
         orders.getOrderDetaillist().clear();
         for(OrderDetail x:oldOrders.getOrderDetaillist()){
             orderDetailService.save(x);
@@ -156,20 +148,6 @@ public class OrderController {
 
         }
         ordersService.save(orders);
-
-        // Orders orders= ordersService.findById(id);
-        //  System.out.println("id order tai addrow "+id);
-        //  System.out.println("id tai addrow "+orders.getId());
-//        if(orders.getOrderDetaillist()!=null ){
-//            newLineItemId+= orders.getOrderDetaillist().size();
-//        }
-//        OrderDetail newDetail = new OrderDetail(0, 0, 0.0, newLineItemId);
-//        dsach.add(newDetail);
-//
-//        System.out.println(orders.getOrderDate());
-//    //    orders.getOrderDetaillist().add(newDetail);
-//        System.out.println("kich ko orderdetaillist "+orders.getOrderDetaillist().size());
-//        model.addAttribute("orders", orders);
         return "redirect:/";
     }
 
