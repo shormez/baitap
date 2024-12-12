@@ -1,5 +1,7 @@
 package ntt.bai2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,5 +31,5 @@ public class Orders {
     private long salesRepId;
     private long promotionId;
     @OneToMany(mappedBy = "orders",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<OrderDetail> orderDetaillist=new ArrayList<>();
+    private List<OrderDetail> orderDetaillist= new ArrayList<>();
 }

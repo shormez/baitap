@@ -38,6 +38,7 @@
                 <td><input type="text" th:field="*{promotionId}" /></td>
             </tr>
         </table>
+        <h1>[[or</h1>
 
         <h3>Order detail</h3>
         <table border="0" cellpadding="10">
@@ -51,13 +52,13 @@
             </tr>
             </thead>
             <tbody id="order-details-table">
-            <!--            <tr th:each="orderDetail : ${orderDetailList}">-->
-            <!--                <td><input type="checkbox"></td>-->
-            <!--                <td><input type="text" th:field="*{orderDetail.quantity}"  /></td>-->
-            <!--                <td><input type="text" th:field="*{orderDetail.productId}"  /></td>-->
-            <!--                <td><input type="text" th:field="*{orderDetail.unitPrice}"  /></td>-->
-            <!--                <td><input type="text" th:field="*{orderDetail.lineItemId}"  /></td>-->
-            <!--            </tr>-->
+                        <tr th:each="orderDetail : ${orderDetaillist}">
+                            <td><input type="checkbox"></td>
+                            <td><input type="text" th:value="${orderDetail.quantity}"  name="oldQuantity[]" /></td>
+                            <td><input type="text" th:value="${orderDetail.productId}" name="oldProductId[]"  /></td>
+                            <td><input type="text" th:value="${orderDetail.unitPrice}" name="oldUnitPrice[]" /></td>
+                            <td><input type="text" th:value="${orderDetail.lineItemId}" name="oldLineItemId[]" /></td>
+                        </tr>
             </tbody>
         </table>
 
@@ -72,10 +73,10 @@
                     const newRow = document.createElement('tr');
                     newRow.innerHTML = `
                         <td><input type="checkbox" /></td>
-                        <td><input type="text" name="quantity[]" /></td>
-                        <td><input type="text" name="productId[]" /></td>
-                        <td><input type="text" name="unitPrice[]" /></td>
-                        <td><input type="text" name="lineItemId[]" /></td>
+                        <td><input type="text" name="newQuantity[]" /></td>
+                        <td><input type="text" name="newProductId[]" /></td>
+                        <td><input type="text" name="newUnitPrice[]" /></td>
+                        <td><input type="text" name="newLineItemId[]" /></td>
                     `;
                     orderDetailsTable.appendChild(newRow);
                 }
