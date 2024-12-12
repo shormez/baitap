@@ -96,62 +96,35 @@ public class OrderController {
         return "edit_order";
     }
 
-    @GetMapping("/submit/{id}")
-    public String addRow(@ModelAttribute("orders") Orders orders
-            , @PathVariable Long id,
-                         @RequestParam(value = "newQuantity[]",required = false) List<String> quantity,
-                         @RequestParam(value = "newProductId[]",required = false) List<String> productId,
-                         @RequestParam(value = "newUnitPrice[]", required = false) List<String> unitPrice,
-                         @RequestParam(value = "newLineItemId[]",required = false) List<String> lineItemId,
-                         @RequestParam(value = "oldQuantity[]",required = false) List<String> oldQuantity,
-                         @RequestParam(value = "oldProductId[]",required = false) List<String> oldProductId,
-                         @RequestParam(value = "oldUnitPrice[]",required = false) List<String> oldUnitPrice,
-                         @RequestParam(value = "oldLineItemId[]",required = false) List<String> oldLineItemId
-                         ) {
-        System.out.println("id tai submit la " + id);
-        Orders oldOrders= ordersService.findById(id);
 
-        System.out.println("id cua orders den la " + orders.getId() + " " + orders.getOrderMode() + " " + orders.getOrderDate());
-        if(quantity!=null){
-            oldOrders.getOrderDetaillist().clear();
-            for (int i = 0; i < quantity.size(); i++) {
-                OrderDetail newOrderDetail = new OrderDetail(Long.parseLong(quantity.get(i)), Long.parseLong(productId.get(i)), Double.parseDouble(unitPrice.get(i)), Long.parseLong(lineItemId.get(i)));
-                newOrderDetail.setOrders(orders);
-//            orderDetailService.save(newOrderDetail);
-                oldOrders.getOrderDetaillist().add(newOrderDetail);
-                //    System.out.println(newOrderDetail.getId()+" "+newOrderDetail.getQuantity()+" "+newOrderDetail.getLineItemId());
-                // orderDetailService.save(newOrderDetail);
-                //      System.out.println("thuoc tinh trong orders "+quantity.get(i)+" "+productId.get(i)+" "+unitPrice.get(i)+" "+lineItemId.get(i));
-            }
-        }
-        if(oldQuantity!=null){
+    @GetMapping("submit/{id}")
+    public String editing(@PathVariable long id, @ModelAttribute("orders") Orders orders,
+                          @RequestParam(value = "newQuantity[]", required = false) List<String> quantity,
+                          @RequestParam(value = "newProductId[]", required = false) List<String> productId,
+                          @RequestParam(value = "newUnitPrice[]", required = false) List<String> unitPrice,
+                          @RequestParam(value = "newLineItemId[]", required = false) List<String> lineItemId,
+                          @RequestParam(value = "oldQuantity[]", required = false) List<String> oldQuantity,
+                          @RequestParam(value = "oldProductId[]", required = false) List<String> oldProductId,
+                          @RequestParam(value = "oldUnitPrice[]", required = false) List<String> oldUnitPrice,
+                          @RequestParam(value = "oldLineItemId[]", required = false) List<String> oldLineItemId
+    ) {
+        if (oldQuantity != null) {
             for (int i = 0; i < oldQuantity.size(); i++) {
                 OrderDetail newOrderDetail = new OrderDetail(Long.parseLong(oldQuantity.get(i)), Long.parseLong(oldProductId.get(i)), Double.parseDouble(oldUnitPrice.get(i)), Long.parseLong(oldLineItemId.get(i)));
                 newOrderDetail.setOrders(orders);
-//            orderDetailService.save(newOrderDetail);
-                oldOrders.getOrderDetaillist().add(newOrderDetail);
-                //      System.out.println("thuoc tinh trong orders "+quantity.get(i)+" "+productId.get(i)+" "+unitPrice.get(i)+" "+lineItemId.get(i));
+                orders.getOrderDetaillist().add(newOrderDetail);
             }
         }
+        if (quantity != null) {
+            for (int i = 0; i < quantity.size(); i++) {
+                OrderDetail newOrderDetail = new OrderDetail(Long.parseLong(quantity.get(i)), Long.parseLong(productId.get(i)), Double.parseDouble(unitPrice.get(i)), Long.parseLong(lineItemId.get(i)));
+                newOrderDetail.setOrders(orders);
+                orders.getOrderDetaillist().add(newOrderDetail);
 
-        System.out.println("orderdetaillist cua order truoc khi addall");
-        for (OrderDetail x : orders.getOrderDetaillist()) {
-            System.out.println(x.getQuantity() + " " + x.getProductId() + " " + x.getUnitPrice() + " " + x.getLineItemId());
-        }
-
-        System.out.println("thuoc tinh orders: " + orders.getOrderDate() + " " + orders.getOrderMode() + " " + orders.getCustomerId() + " " + orders.getOrderTotal());
-        System.out.println("orderdetaillist cua order sau khi addall");
-        for (OrderDetail x : orders.getOrderDetaillist()) {
-            System.out.println(x.getQuantity() + " " + x.getProductId() + " " + x.getUnitPrice() + " " + x.getLineItemId());
-        }
-        orders.getOrderDetaillist().clear();
-        for(OrderDetail x:oldOrders.getOrderDetaillist()){
-            orderDetailService.save(x);
-            orders.getOrderDetaillist().add(x);
-
+            }
         }
         ordersService.save(orders);
+
         return "redirect:/";
     }
-
 }

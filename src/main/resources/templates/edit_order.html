@@ -85,7 +85,9 @@
                     const checkboxes = document.querySelectorAll('.select-checkbox:checked');
                     checkboxes.forEach(checkbox => {
                         const row = checkbox.closest('tr');
-                        row.remove();
+                        const inputs = row.querySelectorAll('input[type="text"]');
+                         inputs.forEach(input => input.disabled = true); row.remove();
+
                     });
                 }
 
