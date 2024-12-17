@@ -2,9 +2,13 @@ package ntt.bai2.controllers;
 
 import ntt.bai2.entities.Orders;
 import ntt.bai2.entities.OrderDetail;
+import ntt.bai2.entities.Role;
+import ntt.bai2.entities.User;
 import ntt.bai2.services.OrderDetailService;
 import ntt.bai2.services.OrdersService;
+import ntt.bai2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +21,9 @@ public class OrderController {
     private OrdersService ordersService;
     @Autowired
     private OrderDetailService orderDetailService;
-    private List<OrderDetail> dsach;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/")
     public String viewHomePage(Model model) {
@@ -39,14 +45,14 @@ public class OrderController {
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String newOrder(Model model) {
-        dsach = new ArrayList<>();
+        //dsach = new ArrayList<>();
         Orders orders = new Orders();
 
         //   OrderDetail orderDetail=new OrderDetail();
 
 
         model.addAttribute("orders", orders);
-        model.addAttribute("dsach", dsach);
+
         //  model.addAttribute("order_Detail",orderDetail);
         return "new_order";
 
@@ -71,7 +77,7 @@ public class OrderController {
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.GET)
     public String editOrderAndOrderDetail(@PathVariable Long id, Model model) {
-        dsach = new ArrayList<>();
+        //dsach = new ArrayList<>();
         System.out.println("id boc duoc tai edit " + id);
 
         Orders existingOrders = ordersService.findById(id);
@@ -92,10 +98,14 @@ public class OrderController {
 
 
         model.addAttribute("orderDetaillist", orderDetaillist);
-        //  model.addAttribute("dsach",dsach);
+
         return "edit_order";
     }
 
+    @GetMapping("/403")
+    public String accessDenied() {
+        return "403";
+    }
 
     @GetMapping("submit/{id}")
     public String editing(@PathVariable long id, @ModelAttribute("orders") Orders orders,
@@ -125,5 +135,32 @@ public class OrderController {
         }
         ordersService.save(orders);
         return "redirect:/";
+    }
+
+    @GetMapping("/users")
+    public String listUsers(Model model) {
+        List<User> userList = userService.findAllUsers();
+        model.addAttribute("userList", userList);
+        return "users";
+    }
+
+    @GetMapping("/users/edit/{id}")
+    public String editUser(@PathVariable Long id, Model model) {
+        User user = userService.findById(id);
+        List<Role> userRoleList = userService.findAllRoles();
+        String ogRoleList = userService.findRolesByUser(user).toString();
+
+        model.addAttribute("userRoleList", userRoleList);
+        model.addAttribute("user", user);
+        model.addAttribute("ogRoleList", ogRoleList);
+        return "edit_user";
+    }
+
+    @PostMapping("/users/save")
+    public String saveUser(@ModelAttribute("user") User user) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        user.setPassword(encoder.encode(user.getPassword()));
+        userService.save(user);
+        return "redirect:/users";
     }
 }
